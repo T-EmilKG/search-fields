@@ -82,10 +82,10 @@ function useBorderLight(cv,o){
 
 export default function Relay({
   height=160, radius=24, placeholder="Write a message…",
-  fill="var(--token-92ad8f0d-602f-4238-959e-9119bc61089d, rgb(250, 250, 250))", border="rgba(244, 244, 245, 0)", speed=1.35,
+  fill="#FAFAFA", border="rgba(244, 244, 245, 0)", speed=1.35,
   lightHead=[72,231,236], lightCore=[245,246,255], lightTail=[255,138,92],
   font="Poppins", fontSize=16,
-  textColor="var(--token-3daabe86-e5bd-4959-be05-20e0031aa4b5, rgb(113, 113, 122))", iconColor="rgb(156, 163, 175)", placeholderColor="rgb(75, 85, 99)",
+  textColor="#71717A", iconColor="#9CA3AF", placeholderColor="#4B5563",
 }){
   const host=useRef(null),box=useRef(null),cv=useRef(null),input=useRef(null);
   const [w,setW]=useState(0);
