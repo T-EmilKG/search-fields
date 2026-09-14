@@ -36,9 +36,9 @@ function useOutside(ref,close,when){
 
 export default function Iris({
   height=68, radius=34, placeholder="start typing...",
-  fill="var(--token-92ad8f0d-602f-4238-959e-9119bc61089d, rgb(250, 250, 250))", border="var(--token-e663a571-b1b1-4ba1-80cd-5ed82db551ac, rgb(244, 244, 245))", morph=1.00,
+    fill="#FAFAFA", border="#F4F4F5", morph=1.00,
   font="Poppins", fontSize=16,
-  textColor="var(--token-3daabe86-e5bd-4959-be05-20e0031aa4b5, rgb(113, 113, 122))", iconColor="rgb(156, 163, 175)", placeholderColor="rgb(75, 85, 99)",
+   textColor="#71717A", iconColor="#9CA3AF", placeholderColor="#4B5563",
 }){
   const host=useRef(null),input=useRef(null);
   const [w,setW]=useState(0);
