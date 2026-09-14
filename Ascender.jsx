@@ -43,12 +43,12 @@ const ROWS=[
 
 export default function Ascender({
   height=68, radius=34, placeholder="start typing...",
-  fill="var(--token-92ad8f0d-602f-4238-959e-9119bc61089d, rgb(250, 250, 250))", border="var(--token-6b62042d-4d71-4006-b8dc-86a5959aaeb9, rgb(228, 228, 231))", openSpeed=1.00,
-  panelBg="var(--token-e663a571-b1b1-4ba1-80cd-5ed82db551ac, rgb(244, 244, 245))", panelRim="var(--token-6b62042d-4d71-4006-b8dc-86a5959aaeb9, rgb(228, 228, 231))", rowRule="var(--token-6b62042d-4d71-4006-b8dc-86a5959aaeb9, rgb(228, 228, 231))",
-  chipBg="var(--token-e663a571-b1b1-4ba1-80cd-5ed82db551ac, rgb(244, 244, 245))", chipRim="var(--token-6b62042d-4d71-4006-b8dc-86a5959aaeb9, rgb(228, 228, 231))", chipText="var(--token-3daabe86-e5bd-4959-be05-20e0031aa4b5, rgb(113, 113, 122))",
+  fill="#FAFAFA", border="#E4E4E7", openSpeed=1.00,
+  panelBg="#F4F4F5", panelRim="#E4E4E7", rowRule="#E4E4E7",
+  chipBg="#F4F4F5", chipRim="#E4E4E7", chipText="#71717A",
   font="Poppins", fontSize=16,
-  textColor="var(--token-3daabe86-e5bd-4959-be05-20e0031aa4b5, rgb(113, 113, 122))", iconColor="rgb(156, 163, 175)",
-  mutedColor="var(--token-3daabe86-e5bd-4959-be05-20e0031aa4b5, rgb(113, 113, 122))", dimColor="var(--token-3daabe86-e5bd-4959-be05-20e0031aa4b5, rgb(113, 113, 122))", faintColor="rgb(75, 85, 99)", rowColor="var(--token-9b5fed45-fa27-4c5b-b0b6-69a34f51a134, rgb(82, 82, 91))",
+  textColor="#71717A", iconColor="#9CA3AF",
+  mutedColor="#71717A", dimColor="#71717A", faintColor="#4B5563", rowColor="#52525B",
 }){
   const host=useRef(null),input=useRef(null);
   const [open,setOpen]=useState(false);
