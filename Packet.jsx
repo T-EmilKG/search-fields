@@ -104,11 +104,15 @@ export default function Packet({
   const [text,setText]=useState("");
   const pad=26;
 
-  // measure the capsule's real rendered box; the rim is drawn to exactly this
+    // measure the capsule's real rendered box; the rim is drawn to exactly this
   useEffect(()=>{const el=field.current;if(!el)return;
     const read=()=>{const r=el.getBoundingClientRect();
-      setBox(p=>Math.abs(p.w-r.width)<0.5&&Math.abs(p.h-r.height)<0.5?p:{w:r.width,h:r.height});};
-    const ro=new ResizeObserver(read);ro.observe(el);read();return()=>ro.disconnect();},[]);
+      const nw=r.width||el.offsetWidth||0, nh=r.height||height;
+      if(nw>0) setBox(p=>Math.abs(p.w-nw)<0.5&&Math.abs(p.h-nh)<0.5?p:{w:nw,h:nh});};
+    const ro=new ResizeObserver(read);ro.observe(el);
+    read();
+    const t=requestAnimationFrame(read);
+    return()=>{ro.disconnect();cancelAnimationFrame(t);};},[height]);
 
   const burst=useBorderLight(cv,{on:text.length===0,boxW:box.w,boxH:box.h,radius,pad,
     speed,band,rim:border,rimWidth:1.5,cool:lightHead,mid:lightCore,tail:lightTail});
