@@ -1,12 +1,7 @@
 // Packet — standalone React component. No dependencies. MIT.
 // A search field whose border carries a dashed neon streak while empty; the
-// first keystroke bursts it inward.
-//
-// The border light is drawn on a canvas that sits BEHIND the capsule and is
-// aligned to the capsule's MEASURED box (getBoundingClientRect), so the rim
-// always traces the field exactly — at any width, container, or zoom. The
-// field fill should be at least slightly translucent for the glow to show
-// through at the edges; on a solid opaque fill the rim reads only faintly.
+// first keystroke bursts it inward. The border light is a canvas behind the
+// capsule, sized from the measured HOST width so it always has a real size.
 import { useEffect, useRef, useState, useCallback } from "react";
 
 function outline(w,h,r0){const r=Math.min(r0,w/2,h/2),sw=Math.max(0,w-2*r),sh=Math.max(0,h-2*r),q=Math.PI*r/2,length=2*sw+2*sh+4*q;
@@ -26,8 +21,7 @@ const WARM=[255,138,92],CORE=[245,246,255];
 
 function cssColor(v){if(typeof v!=="string"||v.indexOf("var(")<0)return v;var m=v.match(/,\s*([^)]*\)|[^),]+)\)\s*$/);return m?m[1].trim():v;}
 
-// The light. Draws to a canvas sized box.w+pad*2 by box.h+pad*2, with the
-// capsule's top-left at (pad,pad). box is the MEASURED capsule size.
+// The light. Canvas is boxW+pad*2 by boxH+pad*2; capsule top-left at (pad,pad).
 function useBorderLight(cv,o){
   const {on,boxW,boxH,radius,pad,speed=1,band=1,rim="#1F2023",rimWidth=1.5,
     tail=WARM,mid=CORE,cool=[72,231,236]}=o;
@@ -41,7 +35,6 @@ function useBorderLight(cv,o){
     const inset=rimWidth/2;
     const g=outline(Math.max(1,boxW-rimWidth),Math.max(1,boxH-rimWidth),Math.max(0,radius-inset));
     const FRAC=0.15*band,vel=0.16*speed;
-    // rim origin: capsule top-left is at (pad,pad); add inset so the stroke sits inside the edge
     const ox=pad+inset,oy=pad+inset;
     const steps=Math.max(200,Math.round(g.length/2)),rimPath=new Path2D();
     for(let i=0;i<=steps;i++){const p=g.at(i/steps*g.length),x=ox+p.x,y=oy+p.y;i?rimPath.lineTo(x,y):rimPath.moveTo(x,y);}
@@ -99,22 +92,21 @@ export default function Packet({
   font="Poppins", fontSize=16,
   textColor="#71717a", iconColor="#9ca3af", placeholderColor="#4b5563",
 }){
-  const host=useRef(null),field=useRef(null),cv=useRef(null),input=useRef(null);
-  const [box,setBox]=useState({w:0,h:height});
+  const host=useRef(null),cv=useRef(null),input=useRef(null);
+  const [hostW,setHostW]=useState(0);
   const [text,setText]=useState("");
   const pad=26;
 
-    // measure the capsule's real rendered box; the rim is drawn to exactly this
-  useEffect(()=>{const el=field.current;if(!el)return;
-    const read=()=>{const r=el.getBoundingClientRect();
-      const nw=r.width||el.offsetWidth||0, nh=r.height||height;
-      if(nw>0) setBox(p=>Math.abs(p.w-nw)<0.5&&Math.abs(p.h-nh)<0.5?p:{w:nw,h:nh});};
-    const ro=new ResizeObserver(read);ro.observe(el);
-    read();
-    const t=requestAnimationFrame(read);
-    return()=>{ro.disconnect();cancelAnimationFrame(t);};},[height]);
+  // measure the HOST (always width:100%, reports reliably); the field box is
+  // derived from it, so the canvas always has a real size.
+  useEffect(()=>{const el=host.current;if(!el)return;
+    const ro=new ResizeObserver(e=>setHostW(e[0].contentRect.width));
+    ro.observe(el);setHostW(el.getBoundingClientRect().width);return()=>ro.disconnect();},[]);
 
-  const burst=useBorderLight(cv,{on:text.length===0,boxW:box.w,boxH:box.h,radius,pad,
+  const boxW=Math.max(1,hostW-pad*2);  // field width = host minus the padder
+  const boxH=height;
+
+  const burst=useBorderLight(cv,{on:text.length===0,boxW,boxH,radius,pad,
     speed,band,rim:border,rimWidth:1.5,cool:lightHead,mid:lightCore,tail:lightTail});
 
   const inset=Math.round(height*0.353),gap=Math.round(height*0.206),icon=Math.round(height*0.294);
@@ -123,8 +115,8 @@ export default function Packet({
     <div ref={host} style={{position:"relative",width:"100%",margin:(-pad)+"px 0"}}>
       <div style={{position:"relative",padding:pad}}>
         <canvas ref={cv} style={{position:"absolute",left:0,top:0,
-          width:box.w+pad*2,height:box.h+pad*2,pointerEvents:"none"}}/>
-        <div ref={field} onMouseDown={e=>{e.preventDefault();input.current.focus();}}
+          width:boxW+pad*2,height:boxH+pad*2,pointerEvents:"none"}}/>
+        <div onMouseDown={e=>{e.preventDefault();input.current.focus();}}
           style={{position:"relative",boxSizing:"border-box",display:"flex",alignItems:"center",gap,
             height,padding:"0 "+inset+"px",borderRadius:radius,background:fill,cursor:"text",overflow:"hidden"}}>
           <svg width={icon} height={icon} viewBox="0 0 24 24" fill="none"
