@@ -49,11 +49,11 @@ function App() {
           Five animated search components, free to use. Type in them, open them, click around.
         </p>
       </div>
-      <Row name="01 · Packet"><Packet /></Row>
-      <Row name="02 · Iris"><Iris /></Row>
-      <Row name="03 · Ascender"><Ascender /></Row>
-      <Row name="04 · Relay"><Relay /></Row>
-      <Row name="05 · Nexus"><Nexus /></Row>
+        <Row name="01 · Packet"><Packet fill="rgba(250,250,250,0.85)" /></Row>
+   <Row name="02 · Iris"><Iris fill="rgba(250,250,250,0.85)" /></Row>
+   <Row name="03 · Ascender"><Ascender fill="rgba(250,250,250,0.85)" /></Row>
+   <Row name="04 · Relay"><Relay fill="rgba(250,250,250,0.85)" /></Row>
+   <Row name="05 · Nexus"><Nexus fill="rgba(250,250,250,0.85)" /></Row>
     </div>
   )
 }
