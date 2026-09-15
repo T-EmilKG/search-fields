@@ -24,13 +24,13 @@ const label = {
   color: "#6b7280",
   marginBottom: 20,
 }
-const card = {
-  border: "1px solid #1f2023",
-  borderRadius: 20,
-  background: "#0c0d0e",
-  padding: 32,
-}
-
+   const card = {
+     border: "1px solid #1f2023",
+     borderRadius: 20,
+     background: "#0c0d0e",
+     padding: "40px 32px",
+     overflow: "hidden",
+   }
 function Row({ name, children }) {
   return (
     <div style={card}>
